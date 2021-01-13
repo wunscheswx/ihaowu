@@ -1,0 +1,19 @@
+{
+  "name": "@ihaowu/config.microservice",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@nestjs/config": "^0.6.1",
+    "@ihaowu/nestjs-utils": "^0.1.0",
+    "nestjs-redis": "^1.2.8"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=10.x"
+  },
+  "author": {
+    "name": "zhengxs",
+    "email": "zhengxs2018@foxmail.com"
+  },
+  "license": "MIT"
+}

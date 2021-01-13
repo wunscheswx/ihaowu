@@ -1,0 +1,11 @@
+{
+  "cSpell.words": [
+    "ihaowu",
+    "nestjs"
+  ],
+  "cSpell.ignorePaths": [
+    "**/vscode.code-workspace",
+    "**/yarn.lock",
+    "**/package-lock.json"
+  ]
+}

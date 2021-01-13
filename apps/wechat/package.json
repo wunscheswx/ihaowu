@@ -1,0 +1,22 @@
+{
+  "name": "@ihaowu/wechat.microservice",
+  "private": true,
+  "version": "0.1.0",
+  "dependencies": {
+    "@nestjs/config": "^0.6.1",
+    "@ihaowu/nestjs-utils": "^0.1.0",
+    "nestjs-redis": "^1.2.8",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7"
+  },
+  "engines": {
+    "node": ">=10.x"
+  },
+  "author": {
+    "name": "zhengxs",
+    "email": "zhengxs2018@foxmail.com"
+  },
+  "license": "MIT"
+}

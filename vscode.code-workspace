@@ -1,0 +1,29 @@
+{
+  "folders": [
+    {
+			"name": "app:api",
+      "path": "./apps/api"
+    },
+    {
+			"name": "ms:config",
+      "path": "./apps/config"
+    },
+    {
+			"name": "ms:wechat",
+      "path": "./apps/wechat"
+    },
+    {
+			"name": "root",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "cSpell.words": [
+      "ihaowu",
+      "microservice",
+      "microservices",
+      "nestjs",
+      "openid"
+    ]
+  }
+}
