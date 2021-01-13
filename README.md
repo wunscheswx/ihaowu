@@ -4,4 +4,6 @@
 
 > 微服务是基于 `redis` 的,可以通过环境变量，或在当前项目的根添加 `.env` 文件
 
+工作中～
+
 [nestjs]: https://nestjs.com/
