@@ -7,6 +7,7 @@ import { RedisModule } from 'nestjs-redis'
 import { useConfigLoader } from '@ihaowu/nestjs-utils'
 
 import { AppController } from './app.controller'
+import { OAuthController } from './modules/wechat/oauth.controller'
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { AppController } from './app.controller'
       inject: [ConfigService],
     }),
   ],
-  controllers: [AppController],
   providers: [],
+  controllers: [AppController, OAuthController],
 })
 export class AppModule { }

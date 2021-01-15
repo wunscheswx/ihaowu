@@ -1,55 +1,23 @@
-import { Inject, Controller, Get, Res, Query } from '@nestjs/common'
-import { ApiOperation } from '@nestjs/swagger'
-import { ClientProxy } from '@nestjs/microservices'
+import { Request } from 'express'
+import { PATH_METADATA } from '@nestjs/common/constants'
+
+import { Controller, Get, Req } from '@nestjs/common'
+
+import { OAuthController } from './modules/wechat/oauth.controller';
 
 @Controller()
 export class AppController {
-  constructor(@Inject('MICRO_SERVICE') private readonly microService: ClientProxy) { }
 
   @Get()
-  @ApiOperation({
-    summary: '首页'
-  })
-  async index(): Promise<string> {
-    const event = this.microService.send<string>('wechat.oauth.authorize', {
-      redirectUri: 'https://www.baidu.com'
-    })
-    const url = await event.toPromise()
-
-    return url
-  }
+  async index(@Req() req: Request): Promise<any> {
+    const routePath = Reflect.getMetadata(PATH_METADATA, OAuthController)
 
 
-  @Get('/authorize')
-  @ApiOperation({
-    summary: '微信授权登录'
-  })
-  async authorize(@Res() res: any) {
-    const event = this.microService.send<string>('wechat.oauth.authorize', {
-      redirectUri: 'https://www.baidu.com'
-    })
-
-    res.status(302).redirect(await event.toPromise())
-  }
-
-  @Get('/userinfo')
-  @ApiOperation({
-    summary: '微信授权登录'
-  })
-  async userinfo(@Query() query) {
-    const event = this.microService.send<string>('wechat.oauth.userinfo', {
-      code: query.code
-    })
-    const user = await event.toPromise()
-    return user
-  }
-
-  @Get('/token')
-  @ApiOperation({
-    summary: '微信授权登录'
-  })
-  async token() {
-    const event = this.microService.send<string>('wechat.token', false)
-    return event.toPromise()
+    // url baseUrl originalUrl route
+    // console.log(req.route)
+    // console.log(req.url)
+    // console.log(req.get('hostname'))
+    // console.log(req.originalUrl)
+    return routePath + Reflect.getMetadata(PATH_METADATA, OAuthController.prototype.callback)
   }
 }

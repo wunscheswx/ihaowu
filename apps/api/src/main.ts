@@ -23,8 +23,6 @@ App running at:
 }
 
 export async function bootstrap(): Promise<void> {
-  // @todo 为什么类型不匹配？
-  // @ts-ignore
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   const config = app.get(ConfigService)
 

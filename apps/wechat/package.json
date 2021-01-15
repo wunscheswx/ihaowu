@@ -2,14 +2,17 @@
   "name": "@ihaowu/wechat.microservice",
   "private": true,
   "version": "0.1.0",
+  "scripts": {
+    "generate": "prisma generate"
+  },
   "dependencies": {
-    "@nestjs/config": "^0.6.1",
     "@ihaowu/nestjs-utils": "^0.1.0",
-    "nestjs-redis": "^1.2.8",
-    "node-fetch": "^2.6.1"
+    "@nestjs/config": "^0.6.1",
+    "nestjs-redis": "^1.2.8"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.5.7"
+    "@prisma/cli": "^2.14.0",
+    "@prisma/client": "^2.14.0"
   },
   "engines": {
     "node": ">=10.x"

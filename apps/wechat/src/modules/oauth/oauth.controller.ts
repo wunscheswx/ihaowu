@@ -1,6 +1,8 @@
 import { Controller } from '@nestjs/common'
 import { MessagePattern, Payload } from '@nestjs/microservices'
 
+import { map, concatMap } from 'rxjs/operators'
+
 import { OAuthService, AuthorizePayload } from './oauth.service'
 
 @Controller()
@@ -14,19 +16,15 @@ export class OAuthController {
 
   @MessagePattern('wechat.oauth.userinfo')
   async getUser(@Payload() payload: { code: string }) {
-    const token = await this.oAuthService.getToken(payload.code)
+    const oAuthService = this.oAuthService
+    const token = await oAuthService.getToken(payload.code).toPromise()
+
     const scope = token.scope
-    const openid =  token.openid
-
     if (scope === 'snsapi_base') {
-      return { openid, scope }
+      return { openid: token.openid, scope }
     }
 
-    const res = await this.oAuthService.getUser(token.access_token, openid)
-    if (res.openid) {
-      return Object.assign(res, { scope })
-    }
-
-    return res
+    const wxUser = await oAuthService.getUser(token.access_token, token.openid).toPromise()
+    return Object.assign(wxUser, { scope })
   }
 }
