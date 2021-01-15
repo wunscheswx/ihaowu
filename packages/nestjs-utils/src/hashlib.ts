@@ -1,5 +1,5 @@
-import { createHash, BinaryLike } from 'crypto'
+import { createHash, BinaryLike, HashOptions } from 'crypto'
 
-export function hash(data: BinaryLike): string {
-  return createHash("sha256").update(data).digest("hex")
+export function hash(algorithm: string, data: BinaryLike, options?: HashOptions): string {
+  return createHash(algorithm, options).update(data).digest("hex")
 }
