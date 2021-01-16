@@ -3,7 +3,6 @@ import type { ClientOpts } from 'redis'
 import type { JwtModuleOptions } from '@nestjs/jwt'
 
 export default () => ({
-  port: parseInt(process.env.PORT || '7000'),
   proxy: false,
   jwt: <JwtModuleOptions>{
     secret: process.env.JWT_SECRET,
