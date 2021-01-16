@@ -1,0 +1,25 @@
+{
+  "name": "@ihaowu/wechat.microservice",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "generate": "prisma generate"
+  },
+  "dependencies": {
+    "@ihaowu/nestjs-utils": "^0.1.0",
+    "@nestjs/config": "^0.6.1",
+    "nestjs-redis": "^1.2.8"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.14.0",
+    "@prisma/client": "^2.14.0"
+  },
+  "engines": {
+    "node": ">=10.x"
+  },
+  "author": {
+    "name": "zhengxs",
+    "email": "zhengxs2018@foxmail.com"
+  },
+  "license": "MIT"
+}

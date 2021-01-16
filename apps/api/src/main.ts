@@ -26,7 +26,9 @@ export async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   const config = app.get(ConfigService)
 
-  if (config.get('proxy')) {
+  // 如果是 cookie 安全或启用反向代理，如：nginx
+  if (config.get('session.Cookie.secure') || config.get('proxy')) {
+    // 信任第一个代理
     app.set('trust proxy', 1)
   }
 
