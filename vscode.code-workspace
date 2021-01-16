@@ -5,12 +5,16 @@
       "path": "./apps/api"
     },
     {
+			"name": "app:passport",
+      "path": "./apps/passport"
+    },
+    {
 			"name": "ms:config",
-      "path": "./apps/config"
+      "path": "./microservices/config"
     },
     {
 			"name": "ms:wechat",
-      "path": "./apps/wechat"
+      "path": "./microservices/wechat"
     },
     {
 			"name": "root",
@@ -20,6 +24,7 @@
   "settings": {
     "cSpell.words": [
       "ihaowu",
+      "metatype",
       "microservice",
       "microservices",
       "nestjs",

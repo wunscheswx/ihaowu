@@ -17,6 +17,7 @@
   },
   "workspaces": [
     "./apps/*",
+    "./microservices/*",
     "./packages/*"
   ],
   "dependencies": {

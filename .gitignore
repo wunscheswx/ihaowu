@@ -2,6 +2,7 @@
 node_modules
 
 # compiled output
+backup/
 dist/
 apps/*/dist/
 
@@ -33,3 +34,4 @@ coverage/
 
 .env
 dump.rdb
+yarn.lock
