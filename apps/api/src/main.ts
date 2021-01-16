@@ -53,7 +53,7 @@ export async function bootstrap(): Promise<void> {
     SwaggerModule.setup(swaggerConfig.path, app, document)
   }
 
-  await app.listen(config.get<number>('PORT', 3000), config.get<string>('HOST', '0.0.0.0'))
+  await app.listen(config.get<number>('PORT', 7100), config.get<string>('HOST', '0.0.0.0'))
 
   if (process.env.NODE_ENV === 'development') {
     showBanner(await app.getUrl())
