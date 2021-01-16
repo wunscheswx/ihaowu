@@ -15,8 +15,8 @@ model Member {
   // ========= 基础信息 =========
   id        Int              @id @default(autoincrement())
   uid       String           @unique @default(cuid())
-  sysId     String           @unique /// 系统用户 ID
-  // ========= 个人资料 =========
+  sysUserId String           @unique /// 系统用户ID
+  // ========= 会员资料 =========
   avatar    String? /// 头像
   nickname  String? /// 昵称，唯一性由业务代码控制
   gender    Int              @default(0) /// 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知

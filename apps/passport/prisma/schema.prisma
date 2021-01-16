@@ -69,7 +69,8 @@ model SysUserIdentityCertification {
   idCardFrontImage String /// 证件正面图片
   idCardBackImage  String /// 证件反面图片
   holdIDCardImage  String /// 手持证件照片
-  checkStatus      Int       @default(0) /// 审核状态
+  checkStatus      Int       @default(0) /// 审核状态：0 未审核，1 通过，2 驳回
+  reason           String? /// 拒绝理由
   reason           String? /// 拒绝理由
   createdAt        DateTime  @default(now())
   updatedAt        DateTime? @updatedAt

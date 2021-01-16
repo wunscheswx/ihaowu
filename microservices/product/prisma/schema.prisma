@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+/// 品牌信息表
+model BrandInfo {
+  id        Int       @id @default(autoincrement())
+  name      String /// 名称
+  logo      String /// LOGO
+  desc      String /// 品牌描述
+  // homeURL   String /// 主页地址
+  sort      String /// 排序
+  status    Int       @default(0) /// 品牌状态：0 禁用, 1 启用
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  // ========= 关联表 =========
+  ProductEntities ProductEntity[]
+}
+
+// 供应商信息表
+model SupplierInfo {
+  id              Int             @id @default(autoincrement())
+  code            String          @unique /// 编码
+  name            String          @unique /// 名称
+  type            Int             @default(2) /// 类型：1.自营，2.商户
+  contactName     String /// 联系人
+  contactTel      String /// 联系电话
+  bankName        String /// 开户银行名称
+  bankCccount     String /// 银行账号
+  address         String /// 供应商地址
+  status          Int             @default(0) /// 状态：0 禁止，1 启用
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime?       @updatedAt
+  // ========= 关联表 =========
+  sysUserId       Int? /// 供应商管理员用户绑定系统用户ID
+  ProductEntities ProductEntity[]
+}
+
+/// 产品分类表
+model ProductCategory {
+  id              Int             @id @default(autoincrement())
+  // code      String    @unique /// 编码
+  name            String /// 名称
+  imgSrc          String? /// 封面图
+  level           Int /// 层级
+  sort            String /// 排序
+  status          Int             @default(0) /// 品牌状态：0 禁用, 1 启用
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime?       @updatedAt
+  // ========= 关联表 =========
+  ProductEntities ProductEntity[]
+}
+
+/// 商品实体表
+model ProductEntity {
+  // ========= 基础信息 =========
+  id              Int             @id @default(autoincrement())
+  code            String          @unique /// 编码
+  name            String          @unique /// 名称
+  type            Int             @default(0) /// 商品类型：0 实物，1 电子卡券，2 电子书籍
+  summary         String /// 摘要
+  content         String /// 描述
+  madeIn          String /// 产地
+  shelfLife       String? /// 商品有效期
+  productionDate  DateTime? /// 生产日期
+  // ========= 图片 & 视频 =========
+  coverImage      String /// 封面图
+  images          String /// 轮播图
+  videoCover      String? /// 视频封面图
+  videUrl         String? /// 视频地址
+  // ========= 价格 & 销售 & 库存 =========
+  price           Float /// 销售价格
+  marketPrice     Float? /// 市场价格
+  salesNum        Int             @default(0) /// 销售数量
+  stockNum        Int             @default(-1) /// 库存数量
+  // ========= 上架 & 审核 =========
+  publishStatus   Int             @default(0) /// 上下架状态：0 下架，1 上架
+  checkStatus     Int             @default(0) /// 审核状态：0 未审核，1 通过，2 驳回
+  reason          String? /// 拒绝理由
+  // ========= 创建时间 =========
+  createdAt       DateTime        @default(now())
+  createdBy       Int             @default(-1)
+  updatedAt       DateTime?       @updatedAt
+  updateedBy      Int             @default(-1)
+  // ========= 关联表 =========
+  BrandInfo       BrandInfo       @relation(fields: [brandId], references: [id])
+  brandId         Int
+  ProductCategory ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId      Int
+  categoryName    String /// 冗余字段，分类名称
+  SupplierInfo    SupplierInfo    @relation(fields: [supplierId], references: [id])
+  supplierId      Int
+  ProductSkuList  ProductSku[]
+}
+
+/// 商品实体表
+model ProductSku {
+  // ========= 基础信息 =========
+  id             Int            @id @default(autoincrement())
+  code           String         @unique /// 编码
+  attriubtes     String /// 属性列表：json 数据
+  type           Int? /// 商品类型：0 实物，1 电子卡券，2 电子书籍
+  shelfLife      String? /// 商品有效期
+  // ========= 图片 & 视频 =========
+  image          String? /// 封面图
+  videoCover     String? /// 视频封面图
+  videUrl        String? /// 视频地址
+  // ========= 价格 & 库存 & 销售数量 =========
+  price          Float /// 销售价格
+  marketPrice    Float? /// 市场价格
+  stockNum       Int            @default(-1) /// 库存数量
+  salesNum       Int            @default(0) /// 真实销售数量
+  // ========= 溯源信息 =========
+  barCode        String? /// 国际条码
+  productionDate DateTime? /// 生产日期
+  // ========= 实物商品属性 =========
+  weight         Float? /// 重量
+  length         Float? /// 长度
+  width          Float? /// 宽度
+  height         Float? /// 高度
+  // ========= 创建时间 =========
+  createdAt      DateTime       @default(now())
+  createdBy      Int            @default(-1)
+  updatedAt      DateTime?      @updatedAt
+  updateedBy     Int            @default(-1)
+  // ========= 关联表 =========
+  ProductEntity  ProductEntity? @relation(fields: [entityId], references: [id])
+  entityId       Int?
+}
