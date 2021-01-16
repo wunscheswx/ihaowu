@@ -17,6 +17,15 @@
         "tsConfigPath": "apps/api/tsconfig.json"
       }
     },
+    "passport": {
+      "type": "application",
+      "root": "apps/passport",
+      "entryFile": "main",
+      "sourceRoot": "apps/passport/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/passport/tsconfig.json"
+      }
+    },
     "config": {
       "type": "application",
       "root": "apps/config",
