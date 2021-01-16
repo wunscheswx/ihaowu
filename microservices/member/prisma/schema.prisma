@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+/// 会员表
+model Member {
+  // ========= 基础信息 =========
+  id        Int              @id @default(autoincrement())
+  uid       String           @unique @default(cuid())
+  sysId     String           @unique /// 系统用户 ID
+  // ========= 个人资料 =========
+  avatar    String? /// 头像
+  nickname  String? /// 昵称，唯一性由业务代码控制
+  gender    Int              @default(0) /// 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+  birthday  String? /// 生日
+  level     Int              @default(0) /// 会员等级表
+  // ======= 时间 ========
+  createdAt DateTime         @default(now())
+  updatedAt DateTime?        @updatedAt
+  // ========= 关联表 =========
+  pointLogs MemberPointLog[]
+}
+
+/// 会员积分记录表
+model MemberPointLog {
+  // ========= 基础信息 =========
+  id        Int      @id @default(autoincrement())
+  type      Int /// 类型：-1 冲抵，0 登录，1 订单 2 活动
+  point     Int /// 分值 正数 + 负数 -
+  message   String /// 描述消息
+  details   String? /// 更多明细
+  refer     String? /// 前端引用地址
+  createdAt DateTime @default(now())
+  // ========= 关联表 =========
+  memberId  Int
+  Member    Member   @relation(fields: [memberId], references: [id])
+}
+
+/// 会员积分消费记录表
+
+/// 会员等级信息配置表
+model MemberLevelsInfo {
+  // ========= 基础信息 =========
+  id        Int       @id @default(autoincrement())
+  name      String /// 名称
+  level     Int /// 级别
+  minPoint  Int /// 积分下限
+  maxPoint  Int /// 积分上限
+  // ======= 时间 ========
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
