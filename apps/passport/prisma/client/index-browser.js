@@ -75,6 +75,7 @@ exports.Prisma.SysUserScalarFieldEnum = makeEnum({
   avatar: 'avatar',
   nickname: 'nickname',
   gender: 'gender',
+  birthday: 'birthday',
   username: 'username',
   password: 'password',
   verified: 'verified',
@@ -102,6 +103,21 @@ exports.Prisma.SysUserLogScalarFieldEnum = makeEnum({
   sysUserId: 'sysUserId'
 });
 
+exports.Prisma.SysUserIdentityCertificationScalarFieldEnum = makeEnum({
+  id: 'id',
+  realName: 'realName',
+  idCardType: 'idCardType',
+  idCardNo: 'idCardNo',
+  idCardFrontImage: 'idCardFrontImage',
+  idCardBackImage: 'idCardBackImage',
+  holdIDCardImage: 'holdIDCardImage',
+  checkStatus: 'checkStatus',
+  reason: 'reason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sysUserId: 'sysUserId'
+});
+
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
@@ -115,7 +131,8 @@ exports.Prisma.QueryMode = makeEnum({
 
 exports.Prisma.ModelName = makeEnum({
   SysUser: 'SysUser',
-  SysUserLog: 'SysUserLog'
+  SysUserLog: 'SysUserLog',
+  SysUserIdentityCertification: 'SysUserIdentityCertification'
 });
 
 /**

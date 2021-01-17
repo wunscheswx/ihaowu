@@ -13,34 +13,36 @@ generator client {
 /// 系统用户表
 model SysUser {
   // ========= 基础信息 =========
-  id          Int          @id @default(autoincrement())
-  uid         String       @unique @default(cuid())
+  id                           Int                           @id @default(autoincrement())
+  uid                          String                        @unique @default(cuid())
   // ========= 个人资料 =========
-  avatar      String? /// 头像
-  nickname    String? /// 昵称，唯一性由业务代码控制
-  gender      Int          @default(0) /// 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+  avatar                       String? /// 头像
+  nickname                     String? /// 昵称，唯一性由业务代码控制
+  gender                       Int                           @default(0) /// 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+  birthday                     String? /// 生日
   // ========= 登录账号 =========
-  username    String? /// 账号名称，唯一性由业务代码控制
-  password    String? /// 密码
-  verified    Boolean      @default(false) /// 账号验证
+  username                     String? /// 账号名称，唯一性由业务代码控制
+  password                     String? /// 密码
+  verified                     Boolean                       @default(false) /// 账号验证
   // ========= 联系方式 =========
-  mobile      String? /// 注册手机号码，唯一性由业务逻辑控制
-  email       String? /// 注册邮箱，唯一性由业务逻辑控制
-  // ======= 状态 & 权限 ========
-  isDeleted   Boolean      @default(false) /// 是否删除
-  isLocked    Boolean      @default(false) /// 账号已锁定
-  isAdmin     Boolean      @default(false) /// 是否管理员
-  // ======= 关联表 ========
-  SysUserLogs SysUserLog[]
-  // ======= 时间 ========
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime?    @updatedAt
-  deletedAt   DateTime?
+  mobile                       String? /// 注册手机号码，唯一性由业务逻辑控制
+  email                        String? /// 注册邮箱，唯一性由业务逻辑控制
+  // ========= 状态 & 权限 =========
+  isDeleted                    Boolean                       @default(false) /// 是否删除
+  isLocked                     Boolean                       @default(false) /// 账号已锁定
+  isAdmin                      Boolean                       @default(false) /// 是否管理员
+  // ========= 时间 =========
+  createdAt                    DateTime                      @default(now())
+  updatedAt                    DateTime?                     @updatedAt
+  deletedAt                    DateTime?
+  // ========= 关联表 =========
+  SysUserLogs                  SysUserLog[]
+  SysUserIdentityCertification SysUserIdentityCertification?
 }
 
 /// 用户日志表
 model SysUserLog {
-  // ======= 基础信息 ========
+  // ========= 基础信息 =========
   id        Int      @id @default(autoincrement())
   category  String   @default("default") /// 日志分类
   level     String   @default("info") /// 日志级别
@@ -49,10 +51,29 @@ model SysUserLog {
   details   String? /// 更多明细
   userAgent String /// 用户代理
   clientIp  String /// 客户端IP
-  // ======= 登录信息 ========
-  createdBy Int  @default(-1)
+  // ========= 登录信息 =========
+  createdBy Int      @default(-1)
   createdAt DateTime @default(now())
-  // ======= 关联用户 ========
+  // ========= 关联用户 =========
   sysUserId Int
   SysUser   SysUser  @relation(fields: [sysUserId], references: [id])
+}
+
+/// 用户实名认证表
+model SysUserIdentityCertification {
+  // ========= 基础信息 =========
+  id               Int       @id @default(autoincrement())
+  realName         String /// 真实姓名
+  idCardType       Int /// 证件类型：1 身份证，2 军官证，3 护照
+  idCardNo         String /// 证件号码
+  idCardFrontImage String /// 证件正面图片
+  idCardBackImage  String /// 证件反面图片
+  holdIDCardImage  String /// 手持证件照片
+  checkStatus      Int       @default(0) /// 审核状态：0 未审核，1 通过，2 驳回
+  reason           String? /// 拒绝理由
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+  // ========= 关联用户 =========
+  sysUserId        Int
+  SysUser          SysUser   @relation(fields: [sysUserId], references: [id])
 }
