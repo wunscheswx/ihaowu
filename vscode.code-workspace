@@ -28,7 +28,8 @@
       "microservice",
       "microservices",
       "nestjs",
-      "openid"
+      "openid",
+      "resave"
     ]
   }
 }
