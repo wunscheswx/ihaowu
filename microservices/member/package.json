@@ -1,6 +1,5 @@
-
 {
-  "name": "@ihaowu/passport",
+  "name": "@ihaowu/member.microservice",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -9,11 +8,6 @@
   "dependencies": {
     "@ihaowu/nestjs-utils": "^0.1.0",
     "@nestjs/config": "^0.6.1",
-    "@nestjs/jwt": "^7.2.0",
-    "bcrypt": "^5.0.0",
-    "class-transformer": "^0.3.2",
-    "class-validator": "^0.13.1",
-    "ms": "^2.1.3",
     "nestjs-redis": "^1.2.8"
   },
   "devDependencies": {

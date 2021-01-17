@@ -306,6 +306,7 @@ export type SysUser = {
   avatar: string | null
   nickname: string | null
   gender: number
+  birthday: string | null
   username: string | null
   password: string | null
   verified: boolean
@@ -334,6 +335,25 @@ export type SysUserLog = {
   clientIp: string
   createdBy: number
   createdAt: Date
+  sysUserId: number
+}
+
+/**
+ * Model SysUserIdentityCertification
+ */
+
+export type SysUserIdentityCertification = {
+  id: number
+  realName: string
+  idCardType: number
+  idCardNo: string
+  idCardFrontImage: string
+  idCardBackImage: string
+  holdIDCardImage: string
+  checkStatus: number
+  reason: string | null
+  createdAt: Date
+  updatedAt: Date | null
   sysUserId: number
 }
 
@@ -474,6 +494,16 @@ export class PrismaClient<
     * ```
     */
   get sysUserLog(): Prisma.SysUserLogDelegate;
+
+  /**
+   * `prisma.sysUserIdentityCertification`: Exposes CRUD operations for the **SysUserIdentityCertification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SysUserIdentityCertifications
+    * const sysUserIdentityCertifications = await prisma.sysUserIdentityCertification.findMany()
+    * ```
+    */
+  get sysUserIdentityCertification(): Prisma.SysUserIdentityCertificationDelegate;
 }
 
 export namespace Prisma {
@@ -776,7 +806,8 @@ export namespace Prisma {
 
   export const ModelName: {
     SysUser: 'SysUser',
-    SysUserLog: 'SysUserLog'
+    SysUserLog: 'SysUserLog',
+    SysUserIdentityCertification: 'SysUserIdentityCertification'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -920,6 +951,7 @@ export namespace Prisma {
     avatar: string | null
     nickname: string | null
     gender: number
+    birthday: string | null
     username: string | null
     password: string | null
     verified: boolean | null
@@ -939,6 +971,7 @@ export namespace Prisma {
     avatar: string | null
     nickname: string | null
     gender: number
+    birthday: string | null
     username: string | null
     password: string | null
     verified: boolean | null
@@ -958,6 +991,7 @@ export namespace Prisma {
     avatar: number | null
     nickname: number | null
     gender: number
+    birthday: number | null
     username: number | null
     password: number | null
     verified: number | null
@@ -989,6 +1023,7 @@ export namespace Prisma {
     avatar?: true
     nickname?: true
     gender?: true
+    birthday?: true
     username?: true
     password?: true
     verified?: true
@@ -1008,6 +1043,7 @@ export namespace Prisma {
     avatar?: true
     nickname?: true
     gender?: true
+    birthday?: true
     username?: true
     password?: true
     verified?: true
@@ -1027,6 +1063,7 @@ export namespace Prisma {
     avatar?: true
     nickname?: true
     gender?: true
+    birthday?: true
     username?: true
     password?: true
     verified?: true
@@ -1120,6 +1157,7 @@ export namespace Prisma {
     avatar?: boolean
     nickname?: boolean
     gender?: boolean
+    birthday?: boolean
     username?: boolean
     password?: boolean
     verified?: boolean
@@ -1128,14 +1166,16 @@ export namespace Prisma {
     isDeleted?: boolean
     isLocked?: boolean
     isAdmin?: boolean
-    SysUserLogs?: boolean | FindManySysUserLogArgs
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    SysUserLogs?: boolean | FindManySysUserLogArgs
+    SysUserIdentityCertification?: boolean | SysUserIdentityCertificationArgs
   }
 
   export type SysUserInclude = {
     SysUserLogs?: boolean | FindManySysUserLogArgs
+    SysUserIdentityCertification?: boolean | SysUserIdentityCertificationArgs
   }
 
   export type SysUserGetPayload<
@@ -1150,14 +1190,18 @@ export namespace Prisma {
     ? SysUser  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'SysUserLogs'
-        ? Array < SysUserLogGetPayload<S['include'][P]>>  : never
+        ? Array < SysUserLogGetPayload<S['include'][P]>>  :
+        P extends 'SysUserIdentityCertification'
+        ? SysUserIdentityCertificationGetPayload<S['include'][P]> | null : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof SysUser ?SysUser [P]
   : 
           P extends 'SysUserLogs'
-        ? Array < SysUserLogGetPayload<S['select'][P]>>  : never
+        ? Array < SysUserLogGetPayload<S['select'][P]>>  :
+        P extends 'SysUserIdentityCertification'
+        ? SysUserIdentityCertificationGetPayload<S['select'][P]> | null : never
   } 
     : SysUser
   : SysUser
@@ -1398,6 +1442,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
     SysUserLogs<T extends FindManySysUserLogArgs = {}>(args?: Subset<T, FindManySysUserLogArgs>): CheckSelect<T, Promise<Array<SysUserLog>>, Promise<Array<SysUserLogGetPayload<T>>>>;
+
+    SysUserIdentityCertification<T extends SysUserIdentityCertificationArgs = {}>(args?: Subset<T, SysUserIdentityCertificationArgs>): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification | null>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T> | null>>;
 
     private get _document();
     /**
@@ -2393,6 +2439,752 @@ export namespace Prisma {
 
 
   /**
+   * Model SysUserIdentityCertification
+   */
+
+
+  export type AggregateSysUserIdentityCertification = {
+    count: number | null
+    avg: SysUserIdentityCertificationAvgAggregateOutputType | null
+    sum: SysUserIdentityCertificationSumAggregateOutputType | null
+    min: SysUserIdentityCertificationMinAggregateOutputType | null
+    max: SysUserIdentityCertificationMaxAggregateOutputType | null
+  }
+
+  export type SysUserIdentityCertificationAvgAggregateOutputType = {
+    id: number
+    idCardType: number
+    checkStatus: number
+    sysUserId: number
+  }
+
+  export type SysUserIdentityCertificationSumAggregateOutputType = {
+    id: number
+    idCardType: number
+    checkStatus: number
+    sysUserId: number
+  }
+
+  export type SysUserIdentityCertificationMinAggregateOutputType = {
+    id: number
+    realName: string | null
+    idCardType: number
+    idCardNo: string | null
+    idCardFrontImage: string | null
+    idCardBackImage: string | null
+    holdIDCardImage: string | null
+    checkStatus: number
+    reason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sysUserId: number
+  }
+
+  export type SysUserIdentityCertificationMaxAggregateOutputType = {
+    id: number
+    realName: string | null
+    idCardType: number
+    idCardNo: string | null
+    idCardFrontImage: string | null
+    idCardBackImage: string | null
+    holdIDCardImage: string | null
+    checkStatus: number
+    reason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sysUserId: number
+  }
+
+  export type SysUserIdentityCertificationCountAggregateOutputType = {
+    id: number
+    realName: number | null
+    idCardType: number
+    idCardNo: number | null
+    idCardFrontImage: number | null
+    idCardBackImage: number | null
+    holdIDCardImage: number | null
+    checkStatus: number
+    reason: number | null
+    createdAt: number | null
+    updatedAt: number | null
+    sysUserId: number
+    _all: number
+  }
+
+
+  export type SysUserIdentityCertificationAvgAggregateInputType = {
+    id?: true
+    idCardType?: true
+    checkStatus?: true
+    sysUserId?: true
+  }
+
+  export type SysUserIdentityCertificationSumAggregateInputType = {
+    id?: true
+    idCardType?: true
+    checkStatus?: true
+    sysUserId?: true
+  }
+
+  export type SysUserIdentityCertificationMinAggregateInputType = {
+    id?: true
+    realName?: true
+    idCardType?: true
+    idCardNo?: true
+    idCardFrontImage?: true
+    idCardBackImage?: true
+    holdIDCardImage?: true
+    checkStatus?: true
+    reason?: true
+    createdAt?: true
+    updatedAt?: true
+    sysUserId?: true
+  }
+
+  export type SysUserIdentityCertificationMaxAggregateInputType = {
+    id?: true
+    realName?: true
+    idCardType?: true
+    idCardNo?: true
+    idCardFrontImage?: true
+    idCardBackImage?: true
+    holdIDCardImage?: true
+    checkStatus?: true
+    reason?: true
+    createdAt?: true
+    updatedAt?: true
+    sysUserId?: true
+  }
+
+  export type SysUserIdentityCertificationCountAggregateInputType = {
+    id?: true
+    realName?: true
+    idCardType?: true
+    idCardNo?: true
+    idCardFrontImage?: true
+    idCardBackImage?: true
+    holdIDCardImage?: true
+    checkStatus?: true
+    reason?: true
+    createdAt?: true
+    updatedAt?: true
+    sysUserId?: true
+    _all?: true
+  }
+
+  export type AggregateSysUserIdentityCertificationArgs = {
+    /**
+     * Filter which SysUserIdentityCertification to aggregate.
+    **/
+    where?: SysUserIdentityCertificationWhereInput
+    /**
+     * @link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs
+     * 
+     * Determine the order of SysUserIdentityCertifications to fetch.
+    **/
+    orderBy?: Enumerable<SysUserIdentityCertificationOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+    **/
+    cursor?: SysUserIdentityCertificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SysUserIdentityCertifications from the position of the cursor.
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SysUserIdentityCertifications.
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SysUserIdentityCertifications
+    **/
+    count?: true
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    avg?: SysUserIdentityCertificationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    sum?: SysUserIdentityCertificationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    min?: SysUserIdentityCertificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    max?: SysUserIdentityCertificationMaxAggregateInputType
+  }
+
+  export type GetSysUserIdentityCertificationAggregateType<T extends AggregateSysUserIdentityCertificationArgs> = {
+    [P in keyof T]: P extends 'count' ? number : GetSysUserIdentityCertificationAggregateScalarType<T[P]>
+  }
+
+  export type GetSysUserIdentityCertificationAggregateScalarType<T extends any> = {
+    [P in keyof T]: P extends keyof SysUserIdentityCertificationAvgAggregateOutputType ? SysUserIdentityCertificationAvgAggregateOutputType[P] : never
+  }
+
+    
+
+
+
+  export type SysUserIdentityCertificationSelect = {
+    id?: boolean
+    realName?: boolean
+    idCardType?: boolean
+    idCardNo?: boolean
+    idCardFrontImage?: boolean
+    idCardBackImage?: boolean
+    holdIDCardImage?: boolean
+    checkStatus?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sysUserId?: boolean
+    SysUser?: boolean | SysUserArgs
+  }
+
+  export type SysUserIdentityCertificationInclude = {
+    SysUser?: boolean | SysUserArgs
+  }
+
+  export type SysUserIdentityCertificationGetPayload<
+    S extends boolean | null | undefined | SysUserIdentityCertificationArgs,
+    U = keyof S
+      > = S extends true
+        ? SysUserIdentityCertification
+    : S extends undefined
+    ? never
+    : S extends SysUserIdentityCertificationArgs | FindManySysUserIdentityCertificationArgs
+    ?'include' extends U
+    ? SysUserIdentityCertification  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'SysUser'
+        ? SysUserGetPayload<S['include'][P]> : never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof SysUserIdentityCertification ?SysUserIdentityCertification [P]
+  : 
+          P extends 'SysUser'
+        ? SysUserGetPayload<S['select'][P]> : never
+  } 
+    : SysUserIdentityCertification
+  : SysUserIdentityCertification
+
+
+  export interface SysUserIdentityCertificationDelegate {
+    /**
+     * Find zero or one SysUserIdentityCertification that matches the filter.
+     * @param {FindUniqueSysUserIdentityCertificationArgs} args - Arguments to find a SysUserIdentityCertification
+     * @example
+     * // Get one SysUserIdentityCertification
+     * const sysUserIdentityCertification = await prisma.sysUserIdentityCertification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends FindUniqueSysUserIdentityCertificationArgs>(
+      args: Subset<T, FindUniqueSysUserIdentityCertificationArgs>
+    ): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification | null>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T> | null>>
+
+    /**
+     * Find the first SysUserIdentityCertification that matches the filter.
+     * @param {FindFirstSysUserIdentityCertificationArgs} args - Arguments to find a SysUserIdentityCertification
+     * @example
+     * // Get one SysUserIdentityCertification
+     * const sysUserIdentityCertification = await prisma.sysUserIdentityCertification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends FindFirstSysUserIdentityCertificationArgs>(
+      args?: Subset<T, FindFirstSysUserIdentityCertificationArgs>
+    ): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification | null>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T> | null>>
+
+    /**
+     * Find zero or more SysUserIdentityCertifications that matches the filter.
+     * @param {FindManySysUserIdentityCertificationArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SysUserIdentityCertifications
+     * const sysUserIdentityCertifications = await prisma.sysUserIdentityCertification.findMany()
+     * 
+     * // Get first 10 SysUserIdentityCertifications
+     * const sysUserIdentityCertifications = await prisma.sysUserIdentityCertification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sysUserIdentityCertificationWithIdOnly = await prisma.sysUserIdentityCertification.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends FindManySysUserIdentityCertificationArgs>(
+      args?: Subset<T, FindManySysUserIdentityCertificationArgs>
+    ): CheckSelect<T, Promise<Array<SysUserIdentityCertification>>, Promise<Array<SysUserIdentityCertificationGetPayload<T>>>>
+
+    /**
+     * Create a SysUserIdentityCertification.
+     * @param {SysUserIdentityCertificationCreateArgs} args - Arguments to create a SysUserIdentityCertification.
+     * @example
+     * // Create one SysUserIdentityCertification
+     * const SysUserIdentityCertification = await prisma.sysUserIdentityCertification.create({
+     *   data: {
+     *     // ... data to create a SysUserIdentityCertification
+     *   }
+     * })
+     * 
+    **/
+    create<T extends SysUserIdentityCertificationCreateArgs>(
+      args: Subset<T, SysUserIdentityCertificationCreateArgs>
+    ): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T>>>
+
+    /**
+     * Delete a SysUserIdentityCertification.
+     * @param {SysUserIdentityCertificationDeleteArgs} args - Arguments to delete one SysUserIdentityCertification.
+     * @example
+     * // Delete one SysUserIdentityCertification
+     * const SysUserIdentityCertification = await prisma.sysUserIdentityCertification.delete({
+     *   where: {
+     *     // ... filter to delete one SysUserIdentityCertification
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends SysUserIdentityCertificationDeleteArgs>(
+      args: Subset<T, SysUserIdentityCertificationDeleteArgs>
+    ): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T>>>
+
+    /**
+     * Update one SysUserIdentityCertification.
+     * @param {SysUserIdentityCertificationUpdateArgs} args - Arguments to update one SysUserIdentityCertification.
+     * @example
+     * // Update one SysUserIdentityCertification
+     * const sysUserIdentityCertification = await prisma.sysUserIdentityCertification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends SysUserIdentityCertificationUpdateArgs>(
+      args: Subset<T, SysUserIdentityCertificationUpdateArgs>
+    ): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T>>>
+
+    /**
+     * Delete zero or more SysUserIdentityCertifications.
+     * @param {SysUserIdentityCertificationDeleteManyArgs} args - Arguments to filter SysUserIdentityCertifications to delete.
+     * @example
+     * // Delete a few SysUserIdentityCertifications
+     * const { count } = await prisma.sysUserIdentityCertification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends SysUserIdentityCertificationDeleteManyArgs>(
+      args?: Subset<T, SysUserIdentityCertificationDeleteManyArgs>
+    ): Promise<BatchPayload>
+
+    /**
+     * Update zero or more SysUserIdentityCertifications.
+     * @param {SysUserIdentityCertificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SysUserIdentityCertifications
+     * const sysUserIdentityCertification = await prisma.sysUserIdentityCertification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends SysUserIdentityCertificationUpdateManyArgs>(
+      args: Subset<T, SysUserIdentityCertificationUpdateManyArgs>
+    ): Promise<BatchPayload>
+
+    /**
+     * Create or update one SysUserIdentityCertification.
+     * @param {SysUserIdentityCertificationUpsertArgs} args - Arguments to update or create a SysUserIdentityCertification.
+     * @example
+     * // Update or create a SysUserIdentityCertification
+     * const sysUserIdentityCertification = await prisma.sysUserIdentityCertification.upsert({
+     *   create: {
+     *     // ... data to create a SysUserIdentityCertification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SysUserIdentityCertification we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends SysUserIdentityCertificationUpsertArgs>(
+      args: Subset<T, SysUserIdentityCertificationUpsertArgs>
+    ): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T>>>
+
+    /**
+     * Find zero or one SysUserIdentityCertification that matches the filter.
+     * @param {FindUniqueSysUserIdentityCertificationArgs} args - Arguments to find a SysUserIdentityCertification
+     * @deprecated This will be deprecated please use prisma.sysUserIdentityCertification.findUnique
+     * @example
+     * // Get one SysUserIdentityCertification
+     * const sysUserIdentityCertification = await prisma.sysUserIdentityCertification.findOne({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findOne<T extends FindUniqueSysUserIdentityCertificationArgs>(
+      args: Subset<T, FindUniqueSysUserIdentityCertificationArgs>
+    ): CheckSelect<T, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertification | null>, Prisma__SysUserIdentityCertificationClient<SysUserIdentityCertificationGetPayload<T> | null>>
+
+    /**
+     * Count the number of SysUserIdentityCertifications.
+     * @param {FindManySysUserIdentityCertificationArgs} args - Arguments to filter SysUserIdentityCertifications to count.
+     * @example
+     * // Count the number of SysUserIdentityCertifications
+     * const count = await prisma.sysUserIdentityCertification.count({
+     *   where: {
+     *     // ... the filter for the SysUserIdentityCertifications we want to count
+     *   }
+     * })
+    **/
+    count(args?: Omit<FindManySysUserIdentityCertificationArgs, 'select' | 'include'>): Promise<number>
+
+    /**
+     * Allows you to perform aggregations operations on a SysUserIdentityCertification.
+     * @param {AggregateSysUserIdentityCertificationArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AggregateSysUserIdentityCertificationArgs>(args: Subset<T, AggregateSysUserIdentityCertificationArgs>): Promise<GetSysUserIdentityCertificationAggregateType<T>>
+
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SysUserIdentityCertification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in 
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__SysUserIdentityCertificationClient<T> implements Promise<T> {
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    SysUser<T extends SysUserArgs = {}>(args?: Subset<T, SysUserArgs>): CheckSelect<T, Prisma__SysUserClient<SysUser | null>, Prisma__SysUserClient<SysUserGetPayload<T> | null>>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | Promise<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | Promise<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | Promise<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * SysUserIdentityCertification findUnique
+   */
+  export type FindUniqueSysUserIdentityCertificationArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+    /**
+     * Filter, which SysUserIdentityCertification to fetch.
+    **/
+    where: SysUserIdentityCertificationWhereUniqueInput
+  }
+
+
+  /**
+   * SysUserIdentityCertification findFirst
+   */
+  export type FindFirstSysUserIdentityCertificationArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+    /**
+     * Filter, which SysUserIdentityCertification to fetch.
+    **/
+    where?: SysUserIdentityCertificationWhereInput
+    /**
+     * @link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs
+     * 
+     * Determine the order of SysUserIdentityCertifications to fetch.
+    **/
+    orderBy?: Enumerable<SysUserIdentityCertificationOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SysUserIdentityCertifications.
+    **/
+    cursor?: SysUserIdentityCertificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SysUserIdentityCertifications from the position of the cursor.
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SysUserIdentityCertifications.
+    **/
+    skip?: number
+    /**
+     * @link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs
+     * 
+     * Filter by unique combinations of SysUserIdentityCertifications.
+    **/
+    distinct?: Enumerable<SysUserIdentityCertificationScalarFieldEnum>
+  }
+
+
+  /**
+   * SysUserIdentityCertification findMany
+   */
+  export type FindManySysUserIdentityCertificationArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+    /**
+     * Filter, which SysUserIdentityCertifications to fetch.
+    **/
+    where?: SysUserIdentityCertificationWhereInput
+    /**
+     * @link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs
+     * 
+     * Determine the order of SysUserIdentityCertifications to fetch.
+    **/
+    orderBy?: Enumerable<SysUserIdentityCertificationOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SysUserIdentityCertifications.
+    **/
+    cursor?: SysUserIdentityCertificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SysUserIdentityCertifications from the position of the cursor.
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SysUserIdentityCertifications.
+    **/
+    skip?: number
+    distinct?: Enumerable<SysUserIdentityCertificationScalarFieldEnum>
+  }
+
+
+  /**
+   * SysUserIdentityCertification create
+   */
+  export type SysUserIdentityCertificationCreateArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+    /**
+     * The data needed to create a SysUserIdentityCertification.
+    **/
+    data: SysUserIdentityCertificationCreateInput
+  }
+
+
+  /**
+   * SysUserIdentityCertification update
+   */
+  export type SysUserIdentityCertificationUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+    /**
+     * The data needed to update a SysUserIdentityCertification.
+    **/
+    data: SysUserIdentityCertificationUpdateInput
+    /**
+     * Choose, which SysUserIdentityCertification to update.
+    **/
+    where: SysUserIdentityCertificationWhereUniqueInput
+  }
+
+
+  /**
+   * SysUserIdentityCertification updateMany
+   */
+  export type SysUserIdentityCertificationUpdateManyArgs = {
+    data: SysUserIdentityCertificationUpdateManyMutationInput
+    where?: SysUserIdentityCertificationWhereInput
+  }
+
+
+  /**
+   * SysUserIdentityCertification upsert
+   */
+  export type SysUserIdentityCertificationUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+    /**
+     * The filter to search for the SysUserIdentityCertification to update in case it exists.
+    **/
+    where: SysUserIdentityCertificationWhereUniqueInput
+    /**
+     * In case the SysUserIdentityCertification found by the `where` argument doesn't exist, create a new SysUserIdentityCertification with this data.
+    **/
+    create: SysUserIdentityCertificationCreateInput
+    /**
+     * In case the SysUserIdentityCertification was found with the provided `where` argument, update it with this data.
+    **/
+    update: SysUserIdentityCertificationUpdateInput
+  }
+
+
+  /**
+   * SysUserIdentityCertification delete
+   */
+  export type SysUserIdentityCertificationDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+    /**
+     * Filter which SysUserIdentityCertification to delete.
+    **/
+    where: SysUserIdentityCertificationWhereUniqueInput
+  }
+
+
+  /**
+   * SysUserIdentityCertification deleteMany
+   */
+  export type SysUserIdentityCertificationDeleteManyArgs = {
+    where?: SysUserIdentityCertificationWhereInput
+  }
+
+
+  /**
+   * SysUserIdentityCertification without action
+   */
+  export type SysUserIdentityCertificationArgs = {
+    /**
+     * Select specific fields to fetch from the SysUserIdentityCertification
+    **/
+    select?: SysUserIdentityCertificationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+    **/
+    include?: SysUserIdentityCertificationInclude | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -2405,6 +3197,7 @@ export namespace Prisma {
     avatar: 'avatar',
     nickname: 'nickname',
     gender: 'gender',
+    birthday: 'birthday',
     username: 'username',
     password: 'password',
     verified: 'verified',
@@ -2438,6 +3231,24 @@ export namespace Prisma {
   export type SysUserLogScalarFieldEnum = (typeof SysUserLogScalarFieldEnum)[keyof typeof SysUserLogScalarFieldEnum]
 
 
+  export const SysUserIdentityCertificationScalarFieldEnum: {
+    id: 'id',
+    realName: 'realName',
+    idCardType: 'idCardType',
+    idCardNo: 'idCardNo',
+    idCardFrontImage: 'idCardFrontImage',
+    idCardBackImage: 'idCardBackImage',
+    holdIDCardImage: 'holdIDCardImage',
+    checkStatus: 'checkStatus',
+    reason: 'reason',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    sysUserId: 'sysUserId'
+  };
+
+  export type SysUserIdentityCertificationScalarFieldEnum = (typeof SysUserIdentityCertificationScalarFieldEnum)[keyof typeof SysUserIdentityCertificationScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -2468,6 +3279,7 @@ export namespace Prisma {
     avatar?: StringNullableFilter | string | null
     nickname?: StringNullableFilter | string | null
     gender?: IntFilter | number
+    birthday?: StringNullableFilter | string | null
     username?: StringNullableFilter | string | null
     password?: StringNullableFilter | string | null
     verified?: BoolFilter | boolean
@@ -2476,10 +3288,11 @@ export namespace Prisma {
     isDeleted?: BoolFilter | boolean
     isLocked?: BoolFilter | boolean
     isAdmin?: BoolFilter | boolean
-    SysUserLogs?: SysUserLogListRelationFilter
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeNullableFilter | Date | string | null
     deletedAt?: DateTimeNullableFilter | Date | string | null
+    SysUserLogs?: SysUserLogListRelationFilter
+    SysUserIdentityCertification?: XOR<SysUserIdentityCertificationWhereInput, SysUserIdentityCertificationRelationFilter> | null
   }
 
   export type SysUserOrderByInput = {
@@ -2488,6 +3301,7 @@ export namespace Prisma {
     avatar?: SortOrder
     nickname?: SortOrder
     gender?: SortOrder
+    birthday?: SortOrder
     username?: SortOrder
     password?: SortOrder
     verified?: SortOrder
@@ -2542,11 +3356,50 @@ export namespace Prisma {
     id?: number
   }
 
+  export type SysUserIdentityCertificationWhereInput = {
+    AND?: Enumerable<SysUserIdentityCertificationWhereInput>
+    OR?: Enumerable<SysUserIdentityCertificationWhereInput>
+    NOT?: Enumerable<SysUserIdentityCertificationWhereInput>
+    id?: IntFilter | number
+    realName?: StringFilter | string
+    idCardType?: IntFilter | number
+    idCardNo?: StringFilter | string
+    idCardFrontImage?: StringFilter | string
+    idCardBackImage?: StringFilter | string
+    holdIDCardImage?: StringFilter | string
+    checkStatus?: IntFilter | number
+    reason?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeNullableFilter | Date | string | null
+    sysUserId?: IntFilter | number
+    SysUser?: XOR<SysUserWhereInput, SysUserRelationFilter>
+  }
+
+  export type SysUserIdentityCertificationOrderByInput = {
+    id?: SortOrder
+    realName?: SortOrder
+    idCardType?: SortOrder
+    idCardNo?: SortOrder
+    idCardFrontImage?: SortOrder
+    idCardBackImage?: SortOrder
+    holdIDCardImage?: SortOrder
+    checkStatus?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sysUserId?: SortOrder
+  }
+
+  export type SysUserIdentityCertificationWhereUniqueInput = {
+    id?: number
+  }
+
   export type SysUserCreateInput = {
     uid?: string
     avatar?: string | null
     nickname?: string | null
     gender?: number
+    birthday?: string | null
     username?: string | null
     password?: string | null
     verified?: boolean
@@ -2559,6 +3412,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     SysUserLogs?: SysUserLogCreateManyWithoutSysUserInput
+    SysUserIdentityCertification?: SysUserIdentityCertificationCreateOneWithoutSysUserInput
   }
 
   export type SysUserUpdateInput = {
@@ -2566,6 +3420,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: IntFieldUpdateOperationsInput | number
+    birthday?: NullableStringFieldUpdateOperationsInput | string | null
     username?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
@@ -2578,6 +3433,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     SysUserLogs?: SysUserLogUpdateManyWithoutSysUserInput
+    SysUserIdentityCertification?: SysUserIdentityCertificationUpdateOneWithoutSysUserInput
   }
 
   export type SysUserUpdateManyMutationInput = {
@@ -2585,6 +3441,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: IntFieldUpdateOperationsInput | number
+    birthday?: NullableStringFieldUpdateOperationsInput | string | null
     username?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
@@ -2636,6 +3493,47 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SysUserIdentityCertificationCreateInput = {
+    realName: string
+    idCardType: number
+    idCardNo: string
+    idCardFrontImage: string
+    idCardBackImage: string
+    holdIDCardImage: string
+    checkStatus?: number
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    SysUser: SysUserCreateOneWithoutSysUserIdentityCertificationInput
+  }
+
+  export type SysUserIdentityCertificationUpdateInput = {
+    realName?: StringFieldUpdateOperationsInput | string
+    idCardType?: IntFieldUpdateOperationsInput | number
+    idCardNo?: StringFieldUpdateOperationsInput | string
+    idCardFrontImage?: StringFieldUpdateOperationsInput | string
+    idCardBackImage?: StringFieldUpdateOperationsInput | string
+    holdIDCardImage?: StringFieldUpdateOperationsInput | string
+    checkStatus?: IntFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    SysUser?: SysUserUpdateOneRequiredWithoutSysUserIdentityCertificationInput
+  }
+
+  export type SysUserIdentityCertificationUpdateManyMutationInput = {
+    realName?: StringFieldUpdateOperationsInput | string
+    idCardType?: IntFieldUpdateOperationsInput | number
+    idCardNo?: StringFieldUpdateOperationsInput | string
+    idCardFrontImage?: StringFieldUpdateOperationsInput | string
+    idCardBackImage?: StringFieldUpdateOperationsInput | string
+    holdIDCardImage?: StringFieldUpdateOperationsInput | string
+    checkStatus?: IntFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type IntFilter = {
     equals?: number
     in?: Enumerable<number>
@@ -2682,12 +3580,6 @@ export namespace Prisma {
     not?: NestedBoolFilter | boolean
   }
 
-  export type SysUserLogListRelationFilter = {
-    every?: SysUserLogWhereInput
-    some?: SysUserLogWhereInput
-    none?: SysUserLogWhereInput
-  }
-
   export type DateTimeFilter = {
     equals?: Date | string
     in?: Enumerable<Date> | Enumerable<string>
@@ -2710,6 +3602,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter | Date | string | null
   }
 
+  export type SysUserLogListRelationFilter = {
+    every?: SysUserLogWhereInput
+    some?: SysUserLogWhereInput
+    none?: SysUserLogWhereInput
+  }
+
+  export type SysUserIdentityCertificationRelationFilter = {
+    is?: SysUserIdentityCertificationWhereInput | null
+    isNot?: SysUserIdentityCertificationWhereInput | null
+  }
+
   export type SysUserRelationFilter = {
     is?: SysUserWhereInput
     isNot?: SysUserWhereInput
@@ -2719,6 +3622,12 @@ export namespace Prisma {
     create?: Enumerable<SysUserLogCreateWithoutSysUserInput>
     connect?: Enumerable<SysUserLogWhereUniqueInput>
     connectOrCreate?: Enumerable<SysUserLogCreateOrConnectWithoutSysUserInput>
+  }
+
+  export type SysUserIdentityCertificationCreateOneWithoutSysUserInput = {
+    create?: SysUserIdentityCertificationCreateWithoutSysUserInput
+    connect?: SysUserIdentityCertificationWhereUniqueInput
+    connectOrCreate?: SysUserIdentityCertificationCreateOrConnectWithoutSysUserInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -2762,6 +3671,16 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<SysUserLogCreateOrConnectWithoutSysUserInput>
   }
 
+  export type SysUserIdentityCertificationUpdateOneWithoutSysUserInput = {
+    create?: SysUserIdentityCertificationCreateWithoutSysUserInput
+    connect?: SysUserIdentityCertificationWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: SysUserIdentityCertificationUpdateWithoutSysUserInput
+    upsert?: SysUserIdentityCertificationUpsertWithoutSysUserInput
+    connectOrCreate?: SysUserIdentityCertificationCreateOrConnectWithoutSysUserInput
+  }
+
   export type SysUserCreateOneWithoutSysUserLogsInput = {
     create?: SysUserCreateWithoutSysUserLogsInput
     connect?: SysUserWhereUniqueInput
@@ -2774,6 +3693,20 @@ export namespace Prisma {
     update?: SysUserUpdateWithoutSysUserLogsInput
     upsert?: SysUserUpsertWithoutSysUserLogsInput
     connectOrCreate?: SysUserCreateOrConnectWithoutSysUserLogsInput
+  }
+
+  export type SysUserCreateOneWithoutSysUserIdentityCertificationInput = {
+    create?: SysUserCreateWithoutSysUserIdentityCertificationInput
+    connect?: SysUserWhereUniqueInput
+    connectOrCreate?: SysUserCreateOrConnectWithoutSysUserIdentityCertificationInput
+  }
+
+  export type SysUserUpdateOneRequiredWithoutSysUserIdentityCertificationInput = {
+    create?: SysUserCreateWithoutSysUserIdentityCertificationInput
+    connect?: SysUserWhereUniqueInput
+    update?: SysUserUpdateWithoutSysUserIdentityCertificationInput
+    upsert?: SysUserUpsertWithoutSysUserIdentityCertificationInput
+    connectOrCreate?: SysUserCreateOrConnectWithoutSysUserIdentityCertificationInput
   }
 
   export type NestedIntFilter = {
@@ -2859,6 +3792,24 @@ export namespace Prisma {
     create: SysUserLogCreateWithoutSysUserInput
   }
 
+  export type SysUserIdentityCertificationCreateWithoutSysUserInput = {
+    realName: string
+    idCardType: number
+    idCardNo: string
+    idCardFrontImage: string
+    idCardBackImage: string
+    holdIDCardImage: string
+    checkStatus?: number
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type SysUserIdentityCertificationCreateOrConnectWithoutSysUserInput = {
+    where: SysUserIdentityCertificationWhereUniqueInput
+    create: SysUserIdentityCertificationCreateWithoutSysUserInput
+  }
+
   export type SysUserLogUpdateWithWhereUniqueWithoutSysUserInput = {
     where: SysUserLogWhereUniqueInput
     data: SysUserLogUpdateWithoutSysUserInput
@@ -2892,11 +3843,30 @@ export namespace Prisma {
     create: SysUserLogCreateWithoutSysUserInput
   }
 
+  export type SysUserIdentityCertificationUpdateWithoutSysUserInput = {
+    realName?: StringFieldUpdateOperationsInput | string
+    idCardType?: IntFieldUpdateOperationsInput | number
+    idCardNo?: StringFieldUpdateOperationsInput | string
+    idCardFrontImage?: StringFieldUpdateOperationsInput | string
+    idCardBackImage?: StringFieldUpdateOperationsInput | string
+    holdIDCardImage?: StringFieldUpdateOperationsInput | string
+    checkStatus?: IntFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SysUserIdentityCertificationUpsertWithoutSysUserInput = {
+    update: SysUserIdentityCertificationUpdateWithoutSysUserInput
+    create: SysUserIdentityCertificationCreateWithoutSysUserInput
+  }
+
   export type SysUserCreateWithoutSysUserLogsInput = {
     uid?: string
     avatar?: string | null
     nickname?: string | null
     gender?: number
+    birthday?: string | null
     username?: string | null
     password?: string | null
     verified?: boolean
@@ -2908,6 +3878,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
+    SysUserIdentityCertification?: SysUserIdentityCertificationCreateOneWithoutSysUserInput
   }
 
   export type SysUserCreateOrConnectWithoutSysUserLogsInput = {
@@ -2920,6 +3891,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: IntFieldUpdateOperationsInput | number
+    birthday?: NullableStringFieldUpdateOperationsInput | string | null
     username?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
@@ -2931,11 +3903,62 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    SysUserIdentityCertification?: SysUserIdentityCertificationUpdateOneWithoutSysUserInput
   }
 
   export type SysUserUpsertWithoutSysUserLogsInput = {
     update: SysUserUpdateWithoutSysUserLogsInput
     create: SysUserCreateWithoutSysUserLogsInput
+  }
+
+  export type SysUserCreateWithoutSysUserIdentityCertificationInput = {
+    uid?: string
+    avatar?: string | null
+    nickname?: string | null
+    gender?: number
+    birthday?: string | null
+    username?: string | null
+    password?: string | null
+    verified?: boolean
+    mobile?: string | null
+    email?: string | null
+    isDeleted?: boolean
+    isLocked?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    deletedAt?: Date | string | null
+    SysUserLogs?: SysUserLogCreateManyWithoutSysUserInput
+  }
+
+  export type SysUserCreateOrConnectWithoutSysUserIdentityCertificationInput = {
+    where: SysUserWhereUniqueInput
+    create: SysUserCreateWithoutSysUserIdentityCertificationInput
+  }
+
+  export type SysUserUpdateWithoutSysUserIdentityCertificationInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: IntFieldUpdateOperationsInput | number
+    birthday?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    SysUserLogs?: SysUserLogUpdateManyWithoutSysUserInput
+  }
+
+  export type SysUserUpsertWithoutSysUserIdentityCertificationInput = {
+    update: SysUserUpdateWithoutSysUserIdentityCertificationInput
+    create: SysUserCreateWithoutSysUserIdentityCertificationInput
   }
 
   export type SysUserLogUpdateWithoutSysUserInput = {
@@ -2980,6 +4003,11 @@ export type SysUserScalarFieldEnum = Prisma.SysUserScalarFieldEnum
  * @deprecated Renamed to `Prisma.SysUserLogScalarFieldEnum`
  */
 export type SysUserLogScalarFieldEnum = Prisma.SysUserLogScalarFieldEnum
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationScalarFieldEnum`
+ */
+export type SysUserIdentityCertificationScalarFieldEnum = Prisma.SysUserIdentityCertificationScalarFieldEnum
 
 /**
  * @deprecated Renamed to `Prisma.SortOrder`
@@ -3227,6 +4255,121 @@ export type SysUserLogDeleteArgs = Prisma.SysUserLogDeleteArgs
 export type SysUserLogDeleteManyArgs = Prisma.SysUserLogDeleteManyArgs
 
 /**
+ * @deprecated Renamed to `Prisma.AggregateSysUserIdentityCertification`
+ */
+export type AggregateSysUserIdentityCertification = Prisma.AggregateSysUserIdentityCertification
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationAvgAggregateOutputType`
+ */
+export type SysUserIdentityCertificationAvgAggregateOutputType = Prisma.SysUserIdentityCertificationAvgAggregateOutputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationSumAggregateOutputType`
+ */
+export type SysUserIdentityCertificationSumAggregateOutputType = Prisma.SysUserIdentityCertificationSumAggregateOutputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationMinAggregateOutputType`
+ */
+export type SysUserIdentityCertificationMinAggregateOutputType = Prisma.SysUserIdentityCertificationMinAggregateOutputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationMaxAggregateOutputType`
+ */
+export type SysUserIdentityCertificationMaxAggregateOutputType = Prisma.SysUserIdentityCertificationMaxAggregateOutputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationCountAggregateOutputType`
+ */
+export type SysUserIdentityCertificationCountAggregateOutputType = Prisma.SysUserIdentityCertificationCountAggregateOutputType
+
+/**
+ * @deprecated Renamed to `Prisma.AggregateSysUserIdentityCertificationArgs`
+ */
+export type AggregateSysUserIdentityCertificationArgs = Prisma.AggregateSysUserIdentityCertificationArgs
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationAvgAggregateInputType`
+ */
+export type SysUserIdentityCertificationAvgAggregateInputType = Prisma.SysUserIdentityCertificationAvgAggregateInputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationSumAggregateInputType`
+ */
+export type SysUserIdentityCertificationSumAggregateInputType = Prisma.SysUserIdentityCertificationSumAggregateInputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationMinAggregateInputType`
+ */
+export type SysUserIdentityCertificationMinAggregateInputType = Prisma.SysUserIdentityCertificationMinAggregateInputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationMaxAggregateInputType`
+ */
+export type SysUserIdentityCertificationMaxAggregateInputType = Prisma.SysUserIdentityCertificationMaxAggregateInputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationCountAggregateInputType`
+ */
+export type SysUserIdentityCertificationCountAggregateInputType = Prisma.SysUserIdentityCertificationCountAggregateInputType
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationSelect`
+ */
+export type SysUserIdentityCertificationSelect = Prisma.SysUserIdentityCertificationSelect
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationInclude`
+ */
+export type SysUserIdentityCertificationInclude = Prisma.SysUserIdentityCertificationInclude
+
+/**
+ * @deprecated Renamed to `Prisma.FindUniqueSysUserIdentityCertificationArgs`
+ */
+export type FindUniqueSysUserIdentityCertificationArgs = Prisma.FindUniqueSysUserIdentityCertificationArgs
+
+/**
+ * @deprecated Renamed to `Prisma.FindFirstSysUserIdentityCertificationArgs`
+ */
+export type FindFirstSysUserIdentityCertificationArgs = Prisma.FindFirstSysUserIdentityCertificationArgs
+
+/**
+ * @deprecated Renamed to `Prisma.FindManySysUserIdentityCertificationArgs`
+ */
+export type FindManySysUserIdentityCertificationArgs = Prisma.FindManySysUserIdentityCertificationArgs
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationCreateArgs`
+ */
+export type SysUserIdentityCertificationCreateArgs = Prisma.SysUserIdentityCertificationCreateArgs
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpdateArgs`
+ */
+export type SysUserIdentityCertificationUpdateArgs = Prisma.SysUserIdentityCertificationUpdateArgs
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpdateManyArgs`
+ */
+export type SysUserIdentityCertificationUpdateManyArgs = Prisma.SysUserIdentityCertificationUpdateManyArgs
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpsertArgs`
+ */
+export type SysUserIdentityCertificationUpsertArgs = Prisma.SysUserIdentityCertificationUpsertArgs
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationDeleteArgs`
+ */
+export type SysUserIdentityCertificationDeleteArgs = Prisma.SysUserIdentityCertificationDeleteArgs
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationDeleteManyArgs`
+ */
+export type SysUserIdentityCertificationDeleteManyArgs = Prisma.SysUserIdentityCertificationDeleteManyArgs
+
+/**
  * @deprecated Renamed to `Prisma.SysUserWhereInput`
  */
 export type SysUserWhereInput = Prisma.SysUserWhereInput
@@ -3255,6 +4398,21 @@ export type SysUserLogOrderByInput = Prisma.SysUserLogOrderByInput
  * @deprecated Renamed to `Prisma.SysUserLogWhereUniqueInput`
  */
 export type SysUserLogWhereUniqueInput = Prisma.SysUserLogWhereUniqueInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationWhereInput`
+ */
+export type SysUserIdentityCertificationWhereInput = Prisma.SysUserIdentityCertificationWhereInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationOrderByInput`
+ */
+export type SysUserIdentityCertificationOrderByInput = Prisma.SysUserIdentityCertificationOrderByInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationWhereUniqueInput`
+ */
+export type SysUserIdentityCertificationWhereUniqueInput = Prisma.SysUserIdentityCertificationWhereUniqueInput
 
 /**
  * @deprecated Renamed to `Prisma.SysUserCreateInput`
@@ -3287,6 +4445,21 @@ export type SysUserLogUpdateInput = Prisma.SysUserLogUpdateInput
 export type SysUserLogUpdateManyMutationInput = Prisma.SysUserLogUpdateManyMutationInput
 
 /**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationCreateInput`
+ */
+export type SysUserIdentityCertificationCreateInput = Prisma.SysUserIdentityCertificationCreateInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpdateInput`
+ */
+export type SysUserIdentityCertificationUpdateInput = Prisma.SysUserIdentityCertificationUpdateInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpdateManyMutationInput`
+ */
+export type SysUserIdentityCertificationUpdateManyMutationInput = Prisma.SysUserIdentityCertificationUpdateManyMutationInput
+
+/**
  * @deprecated Renamed to `Prisma.IntFilter`
  */
 export type IntFilter = Prisma.IntFilter
@@ -3307,11 +4480,6 @@ export type StringNullableFilter = Prisma.StringNullableFilter
 export type BoolFilter = Prisma.BoolFilter
 
 /**
- * @deprecated Renamed to `Prisma.SysUserLogListRelationFilter`
- */
-export type SysUserLogListRelationFilter = Prisma.SysUserLogListRelationFilter
-
-/**
  * @deprecated Renamed to `Prisma.DateTimeFilter`
  */
 export type DateTimeFilter = Prisma.DateTimeFilter
@@ -3322,6 +4490,16 @@ export type DateTimeFilter = Prisma.DateTimeFilter
 export type DateTimeNullableFilter = Prisma.DateTimeNullableFilter
 
 /**
+ * @deprecated Renamed to `Prisma.SysUserLogListRelationFilter`
+ */
+export type SysUserLogListRelationFilter = Prisma.SysUserLogListRelationFilter
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationRelationFilter`
+ */
+export type SysUserIdentityCertificationRelationFilter = Prisma.SysUserIdentityCertificationRelationFilter
+
+/**
  * @deprecated Renamed to `Prisma.SysUserRelationFilter`
  */
 export type SysUserRelationFilter = Prisma.SysUserRelationFilter
@@ -3330,6 +4508,11 @@ export type SysUserRelationFilter = Prisma.SysUserRelationFilter
  * @deprecated Renamed to `Prisma.SysUserLogCreateManyWithoutSysUserInput`
  */
 export type SysUserLogCreateManyWithoutSysUserInput = Prisma.SysUserLogCreateManyWithoutSysUserInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationCreateOneWithoutSysUserInput`
+ */
+export type SysUserIdentityCertificationCreateOneWithoutSysUserInput = Prisma.SysUserIdentityCertificationCreateOneWithoutSysUserInput
 
 /**
  * @deprecated Renamed to `Prisma.StringFieldUpdateOperationsInput`
@@ -3367,6 +4550,11 @@ export type NullableDateTimeFieldUpdateOperationsInput = Prisma.NullableDateTime
 export type SysUserLogUpdateManyWithoutSysUserInput = Prisma.SysUserLogUpdateManyWithoutSysUserInput
 
 /**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpdateOneWithoutSysUserInput`
+ */
+export type SysUserIdentityCertificationUpdateOneWithoutSysUserInput = Prisma.SysUserIdentityCertificationUpdateOneWithoutSysUserInput
+
+/**
  * @deprecated Renamed to `Prisma.SysUserCreateOneWithoutSysUserLogsInput`
  */
 export type SysUserCreateOneWithoutSysUserLogsInput = Prisma.SysUserCreateOneWithoutSysUserLogsInput
@@ -3375,6 +4563,16 @@ export type SysUserCreateOneWithoutSysUserLogsInput = Prisma.SysUserCreateOneWit
  * @deprecated Renamed to `Prisma.SysUserUpdateOneRequiredWithoutSysUserLogsInput`
  */
 export type SysUserUpdateOneRequiredWithoutSysUserLogsInput = Prisma.SysUserUpdateOneRequiredWithoutSysUserLogsInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserCreateOneWithoutSysUserIdentityCertificationInput`
+ */
+export type SysUserCreateOneWithoutSysUserIdentityCertificationInput = Prisma.SysUserCreateOneWithoutSysUserIdentityCertificationInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserUpdateOneRequiredWithoutSysUserIdentityCertificationInput`
+ */
+export type SysUserUpdateOneRequiredWithoutSysUserIdentityCertificationInput = Prisma.SysUserUpdateOneRequiredWithoutSysUserIdentityCertificationInput
 
 /**
  * @deprecated Renamed to `Prisma.NestedIntFilter`
@@ -3417,6 +4615,16 @@ export type SysUserLogCreateWithoutSysUserInput = Prisma.SysUserLogCreateWithout
 export type SysUserLogCreateOrConnectWithoutSysUserInput = Prisma.SysUserLogCreateOrConnectWithoutSysUserInput
 
 /**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationCreateWithoutSysUserInput`
+ */
+export type SysUserIdentityCertificationCreateWithoutSysUserInput = Prisma.SysUserIdentityCertificationCreateWithoutSysUserInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationCreateOrConnectWithoutSysUserInput`
+ */
+export type SysUserIdentityCertificationCreateOrConnectWithoutSysUserInput = Prisma.SysUserIdentityCertificationCreateOrConnectWithoutSysUserInput
+
+/**
  * @deprecated Renamed to `Prisma.SysUserLogUpdateWithWhereUniqueWithoutSysUserInput`
  */
 export type SysUserLogUpdateWithWhereUniqueWithoutSysUserInput = Prisma.SysUserLogUpdateWithWhereUniqueWithoutSysUserInput
@@ -3437,6 +4645,16 @@ export type SysUserLogScalarWhereInput = Prisma.SysUserLogScalarWhereInput
 export type SysUserLogUpsertWithWhereUniqueWithoutSysUserInput = Prisma.SysUserLogUpsertWithWhereUniqueWithoutSysUserInput
 
 /**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpdateWithoutSysUserInput`
+ */
+export type SysUserIdentityCertificationUpdateWithoutSysUserInput = Prisma.SysUserIdentityCertificationUpdateWithoutSysUserInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserIdentityCertificationUpsertWithoutSysUserInput`
+ */
+export type SysUserIdentityCertificationUpsertWithoutSysUserInput = Prisma.SysUserIdentityCertificationUpsertWithoutSysUserInput
+
+/**
  * @deprecated Renamed to `Prisma.SysUserCreateWithoutSysUserLogsInput`
  */
 export type SysUserCreateWithoutSysUserLogsInput = Prisma.SysUserCreateWithoutSysUserLogsInput
@@ -3455,6 +4673,26 @@ export type SysUserUpdateWithoutSysUserLogsInput = Prisma.SysUserUpdateWithoutSy
  * @deprecated Renamed to `Prisma.SysUserUpsertWithoutSysUserLogsInput`
  */
 export type SysUserUpsertWithoutSysUserLogsInput = Prisma.SysUserUpsertWithoutSysUserLogsInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserCreateWithoutSysUserIdentityCertificationInput`
+ */
+export type SysUserCreateWithoutSysUserIdentityCertificationInput = Prisma.SysUserCreateWithoutSysUserIdentityCertificationInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserCreateOrConnectWithoutSysUserIdentityCertificationInput`
+ */
+export type SysUserCreateOrConnectWithoutSysUserIdentityCertificationInput = Prisma.SysUserCreateOrConnectWithoutSysUserIdentityCertificationInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserUpdateWithoutSysUserIdentityCertificationInput`
+ */
+export type SysUserUpdateWithoutSysUserIdentityCertificationInput = Prisma.SysUserUpdateWithoutSysUserIdentityCertificationInput
+
+/**
+ * @deprecated Renamed to `Prisma.SysUserUpsertWithoutSysUserIdentityCertificationInput`
+ */
+export type SysUserUpsertWithoutSysUserIdentityCertificationInput = Prisma.SysUserUpsertWithoutSysUserIdentityCertificationInput
 
 /**
  * @deprecated Renamed to `Prisma.SysUserLogUpdateWithoutSysUserInput`
