@@ -4,6 +4,9 @@
 
 基于 [nestjs] 的微服务架构搭建的在线商城服务端
 
+## 关联应用
+
+- [认证中心](https://github.com/ihaowu/ihaowu-passport)
 
 ## 架构设计
 
